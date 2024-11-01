@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 
 app.use(express.json());
 app.use('/api', require("./routes/CreateUser"));
+app.use('/api', require("./routes/LogInUser"));
 
 // Start server
 const PORT = process.env.PORT || 5000;
