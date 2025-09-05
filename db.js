@@ -1,17 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+// const mongoDbClient = require("mongodb").MongoClient
+require('dotenv').config();
+const mongoURI = process.env.mongoURI
 
-const mongoURI = 'mongodb+srv://sneha:riya@1079@food.h3kud.mongodb.net/food?retryWrites=true&w=majority'
+module.exports = function (callback) {
+    mongoose.connect(mongoURI, { useNewUrlParser: true }, async (err, result) => {
+        // mongoDbClient.connect(mongoURI, { useNewUrlParser: true }, async(err, result) => {
+        if (err) console.log("---" + err)
+        else {
+            // var database =
+            console.log("connected to mongo")
+            const foodCollection = await mongoose.connection.db.collection("food_items");
+            foodCollection.find({}).toArray(async function (err, data) {
+                const categoryCollection = await mongoose.connection.db.collection("Categories");
+                categoryCollection.find({}).toArray(async function (err, Catdata) {
+                    callback(err, data, Catdata);
 
-const connectToDB = async () => {
-  try {
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    console.log("Connected to MongoDB");
-  } catch (err) {
-    console.error("Connection error:", err.message);
-  }
+                })
+            });
+            // listCollections({name: 'food_items'}).toArray(function (err, database) {
+            // });
+            //     module.exports.Collection = database;
+            // });
+        }
+    })
 };
-
-connectToDB();

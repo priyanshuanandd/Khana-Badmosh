@@ -1,34 +1,30 @@
-// models/User.js
+const mongoose = require('mongoose')
 
-const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-// Define the User Schema
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    match: [/.+@.+\..+/, 'Please enter a valid email address'], // Email validation
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
+const UserSchema = new Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    location:{
+        type:String,
+        required:true,
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    date:{
+        type:Date,
+        default:Date.now
+    },
 
-  date: {
-    type: Date,
-    default: Date.now,
-  }
-});
+  });
 
-// Create and export the User model
-const User = mongoose.model('User', UserSchema);
-module.exports = User;
+  module.exports = mongoose.model('user',UserSchema)
