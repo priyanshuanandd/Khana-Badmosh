@@ -1,39 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import NavBar from './Components/NavBar'; // Import the NavBar component
-import Home from './Screens/Home';
-import Login from './Screens/Login';
-import Signup from './Screens/Signup';
-import Contact from './Screens/Contact';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'  //npm i bootstrap-dark-5 boostrap
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
+
+import Home from './screens/Home.js';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+// import Navbar from './components/Navbar';
+import Login from './screens/Login.js';
+import Signup from './screens/Signup.js';
+import { CartProvider } from '.components/ContextReducer.js';
+import MyOrder from './Screens/MyOrder.js';
+
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-
-  useEffect(() => {
-    // Apply the theme to the root of the document
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  const handleThemeToggle = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-  };
-
   return (
-    <Router>
-      {/* Pass the theme toggle handler to NavBar as a prop */}
-      <NavBar onThemeToggle={handleThemeToggle} theme={theme} />
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </div>
-    </Router>
+    <CartProvider>
+      <Router>
+        <div>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
+            <Route exact path="/myorder" element={<MyOrder />} />
+          </Routes>
+        </div>
+      </Router>
+    </CartProvider>
   );
 }
 
