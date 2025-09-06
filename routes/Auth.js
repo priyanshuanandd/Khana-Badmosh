@@ -180,6 +180,32 @@ router.post('/orderData', async (req, res) => {
         }
     }
 })
+// Get specific order details by Order ID (Login Required / optional)
+router.get('/orderDetails/:id', async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const order = await Order.findById(orderId);
+
+        if (!order) {
+            return res.status(404).json({ success: false, error: "Order not found" });
+        }
+
+        res.json({ success: true, order });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+})
+router.get('/allOrders', async (req, res) => {
+    try {
+        const orders = await Order.find();
+        res.json({ success: true, orders });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+})
+
 
 router.post('/myOrderData', async (req, res) => {
     try {
